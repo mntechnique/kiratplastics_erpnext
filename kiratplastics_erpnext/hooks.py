@@ -111,3 +111,4 @@ app_license = "GPL v3"
 # 	"frappe.desk.doctype.event.event.get_events": "kiratplastics_erpnext.event.get_events"
 # }
 
+fixtures = ["Custom Script", "Custom Field", "Property Setter"]
