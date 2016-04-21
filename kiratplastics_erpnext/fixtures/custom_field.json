@@ -193,7 +193,7 @@
   "in_list_view": 0, 
   "insert_after": "title", 
   "label": "Invoice Type", 
-  "modified": "2016-04-21 17:15:43.298238", 
+  "modified": "2016-04-21 21:11:43.333264", 
   "name": "Sales Invoice-kirat_invoice_type", 
   "no_copy": 0, 
   "options": "Sales Invoice\nSupplementary Invoice\nInvoice for Sample\nChallan", 
