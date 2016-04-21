@@ -1,1 +1,11 @@
-[]
+[
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Sales Invoice", 
+  "modified": "2016-04-21 17:12:03.287821", 
+  "name": "Sales Invoice-Client", 
+  "script": "frappe.ui.form.on(\"Sales Invoice\", \"kirat_invoice_type\", function(frm) {\n  switch (frm.doc.kirat_invoice_type) {\n     case \"Supplementary Invoice\":\n        frm.set_value(\"naming_series\", \"SINV-SUP-\");\n        break;\n     case \"Invoice for Sample\":\n        frm.set_value(\"naming_series\", \"SINV-SMP-\");\n        break;\n     case \"Challan\":\n        frm.set_value(\"naming_series\", \"SINV-CHL-\");\n        break;\n     default:\n        frm.set_value(\"naming_series\", \"SINV-\");\n        break;\n  }\n});\n\n//Disable Invoice type selection in modify mode.\nfrappe.ui.form.on(\"Sales Invoice\", \"refresh\", function(frm) {\n    // use the __islocal value of doc, to check if the doc is saved or not\n    frm.set_df_property(\"kirat_invoice_type\", \"read_only\", frm.doc.__islocal ? 0 : 1);\n});\n\n\n", 
+  "script_type": "Client"
+ }
+]
