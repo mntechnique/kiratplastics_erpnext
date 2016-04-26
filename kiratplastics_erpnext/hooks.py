@@ -107,8 +107,9 @@ app_license = "GPL v3"
 # Overriding Whitelisted Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
+override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "kiratplastics_erpnext.event.get_events"
-# }
+	"erpnext.stock.get_item_details.get_item_details" : "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_get_item_details" 
+}
 
 fixtures = ["Custom Script", "Custom Field", "Property Setter"]
