@@ -10,6 +10,11 @@ from erpnext.accounts.doctype.pricing_rule.pricing_rule import get_pricing_rule_
 from erpnext.setup.utils import get_exchange_rate
 from frappe.model.meta import get_field_precision
 from erpnext.stock.get_item_details import get_item_details
+from frappe.model.naming import make_autoname
+import frappe.permissions
+from frappe.model.document import Document
+from frappe.model.mapper import get_mapped_doc
+
 
 
 def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters):
@@ -74,3 +79,54 @@ def kp_get_item_details(args):
 @frappe.whitelist()
 def kp_calculate_excise_duty_amt(qty, price, rate):
 	return (qty * price) * (rate / 100)
+
+
+@frappe.whitelist(allow_guest=True)
+def kp_calculate_item_values(self, method):	
+	for item in self.get("items"):
+		self.round_floats_in(item)
+
+		if item.discount_percentage == 100:
+			item.rate = 0.0
+		elif not item.rate:
+			item.rate = flt(item.price_list_rate *
+				(1.0 - (item.discount_percentage / 100.0)), item.precision("rate"))
+		
+		item.net_rate = item.rate
+		
+		#no need to check whether item rate or price_list_rate at this point.
+		#item.amount = flt(item.rate * item.qty,	item.precision("amount"))
+		item_rate_for_excise_calc = 0.0
+		if item.kirat_excise_price != 0.0:
+			item_rate_for_excise_calc = item.kirat_excise_price
+		else:
+			item_rate_for_excise_calc = item.rate
+
+		amt = flt(item.rate * item.qty,	item.precision("amount"))
+		excise_duty_amt = kp_calculate_excise_duty_amt(item.qty, item_rate_for_excise_calc, item.kirat_excise_duty_rate)
+
+		item.amount = amt + excise_duty_amt
+		item.net_amount = item.amount
+
+		self.run_method("set_in_company_currency", item, ["price_list_rate", "rate", "net_rate", "amount", "net_amount"])
+
+		item.item_tax_amount = 0.0
+
+
+
+	# for item in self.doc.get("items"):
+	# 	self.doc.round_floats_in(item)
+
+	# 	if item.discount_percentage == 100:
+	# 		item.rate = 0.0
+	# 	elif not item.rate:
+	# 		item.rate = flt(item.price_list_rate *
+	# 			(1.0 - (item.discount_percentage / 100.0)), item.precision("rate"))
+
+	# 	item.net_rate = item.rate
+	# 	item.amount = flt(item.rate * item.qty,	item.precision("amount"))
+	# 	item.net_amount = item.amount
+
+	# 	self.set_in_company_currency(item, ["price_list_rate", "rate", "net_rate", "amount", "net_amount"])
+
+	# 	item.item_tax_amount = 0.0
