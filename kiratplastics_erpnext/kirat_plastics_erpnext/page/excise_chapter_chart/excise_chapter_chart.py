@@ -29,7 +29,8 @@ def add_node():
 	doc.update({
 		name_field: frappe.form_dict['name_field'],
 		parent_field: frappe.form_dict['parent'],
-		"is_group": frappe.form_dict['is_group']
+		"is_group": frappe.form_dict['is_group'],
+		"chapter_head": frappe.form_dict['chapter_head'],
 	})
 
 	doc.save()
