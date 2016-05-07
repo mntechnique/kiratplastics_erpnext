@@ -1,0 +1,28 @@
+{
+ "content": null, 
+ "creation": "2016-05-04 12:56:02.092227", 
+ "docstatus": 0, 
+ "doctype": "Page", 
+ "idx": 0, 
+ "modified": "2016-05-04 12:56:58.660828", 
+ "modified_by": "Administrator", 
+ "module": "Kirat Plastics ERPNext", 
+ "name": "excise-chapter-chart", 
+ "owner": "Administrator", 
+ "page_name": "Excise Chapter Chart", 
+ "roles": [
+  {
+   "role": "Sales Master Manager"
+  }, 
+  {
+   "role": "Sales Manager"
+  }, 
+  {
+   "role": "Sales User"
+  }
+ ], 
+ "script": null, 
+ "standard": "Yes", 
+ "style": null, 
+ "title": "Excise Chapter Chart"
+}
