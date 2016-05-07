@@ -6,6 +6,7 @@ import frappe
 from frappe import _
 from erpnext.stock.get_item_details import get_item_details
 
+#Query for filtering items.
 def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters):
 	frappe.msgprint("kp_sinv_item_query called")
 	return frappe.db.sql("""select item_code, item_name from `tabItem`
@@ -17,6 +18,7 @@ def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters):
 		'page_len': page_len
 	})
 
+#Retrieve item details.
 @frappe.whitelist()
 def kp_get_item_details(args):
 
@@ -35,7 +37,7 @@ def kp_get_item_details(args):
 	result["kirat_excise_price"] = frappe.db.get_value("Item", item_code, "excise_price")
 
 	#Calculate final amount.
-	item_rate = 0.0 #This will be set either to result[price_list_rate] or result[rate] depending on which is non-zero.
+	item_rate = 0.0 #Set either to result[price_list_rate] or result[rate] depending on which is non-zero.
 	item_rate_for_excise_calc = 0.0
 	
 	#Set item_rate
@@ -53,6 +55,7 @@ def kp_get_item_details(args):
 	excise_duty_amt = kp_calculate_excise_duty_amt(result["qty"], item_rate_for_excise_calc, result["kirat_excise_duty_rate"])
 
 	result["kirat_excise_duty_amt"] = excise_duty_amt
+	result["kirat_total_amt_with_excise"] = excise_duty_amt + result["amount"]
 	
 	return result
 
