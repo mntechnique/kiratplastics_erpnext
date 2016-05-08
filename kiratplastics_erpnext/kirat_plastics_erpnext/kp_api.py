@@ -8,15 +8,18 @@ from erpnext.stock.get_item_details import get_item_details
 
 #Query for filtering items.
 def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters):
-	frappe.msgprint("kp_sinv_item_query called")
-	return frappe.db.sql("""select item_code, item_name from `tabItem`
-		where item_name = 'S12040-012A0Y-PLATE BACK'
-		order by item_name DESC
-		limit %(start)s, %(page_len)s""".format(**{
-	}), {		
-		'start': start,
-		'page_len': page_len
-	})
+
+
+	return frappe.db.sql("""SELECT B.name, B.item_group, B.item_name, B.description as description
+	FROM `tabItem Customer Detail` AS A
+	INNER JOIN `tabItem` AS B ON A.parent = B.name
+	WHERE A.customer_name = '%s' AND B.excise_chapter = '%s';""" % (filters.get("cust_name"), filters.get("excise_chapter")))
+
+	# #WORKS!!
+	# return frappe.db.sql("""SELECT B.name, B.item_group, B.item_name, B.description as description
+	# FROM `tabItem Customer Detail` AS A
+	# INNER JOIN `tabItem` AS B ON A.parent = B.name
+	# WHERE A.customer_name = '%s';""" % (filters.get("cust_name")))
 
 #Retrieve item details.
 @frappe.whitelist()
