@@ -4,7 +4,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import _
-from erpnext.stock.get_item_details import get_item_details
+from erpnext.stock.get_item_details import get_item_details, get_item_code
 
 #Query for filtering items.
 def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters):
@@ -22,7 +22,7 @@ def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters):
 	# WHERE A.customer_name = '%s';""" % (filters.get("cust_name")))
 
 #Retrieve item details.
-@frappe.whitelist()
+@frappe.whitelist() #overridden in hooks.py
 def kp_get_item_details(args):
 
 	result = get_item_details(args)
