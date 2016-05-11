@@ -14,6 +14,17 @@ def get_data():
 			]
 		},
 		{
+			"label": _("Setup"),
+			"icon": "icon-star",
+			"items": [
+				{
+					"type": "doctype",
+					"name": "KP Settings",
+					"description": _("KP Settings"),
+				}
+			]
+		},
+		{
 			"label": _("Excise Chapter Chart"),
 			"icon": "icon-list",
 			"items": [
