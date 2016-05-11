@@ -70,11 +70,11 @@ app_license = "GPL v3"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"Sales Invoice": {
-# 		"validate": "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_calculate_item_values",
-# 	}
-# }
+doc_events = {
+	"Sales Invoice": {
+		"validate": "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_validate",
+	}
+}
 
 # Scheduled Tasks
 # ---------------

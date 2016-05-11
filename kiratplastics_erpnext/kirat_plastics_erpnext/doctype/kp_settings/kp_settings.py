@@ -32,14 +32,29 @@ def get_kp_settings(company):
 	income_account, receivable_account, payable_account, tax_account and cost_center"""
 
 	out = {
-		"ep_account" : frappe.db.get_value("KP Settings Excise Payable",
-		{
-			"company": company
-		}, 
-		"account"),
+		"ep_account" : frappe.db.get_value("KP Settings Excise Payable", {"company": company}, "account"),
+		"zero_price_list" : frappe.db.get_single_value("Price List", "zero_price_list"),
 	}
 
 	if not out["ep_account"]:
 		frappe.throw(_("Set Default Excise Payable Account in KP Settings"))
 
 	return out
+
+@frappe.whitelist()
+def get_ep_account(company):
+	ep_account = frappe.db.get_value("KP Settings Excise Payable", {"company": company}, "account")
+
+	if not ep_account:
+		frappe.throw(_("Set default Excise Payable account in KP Settings!"))
+
+	return ep_account
+
+@frappe.whitelist()
+def get_zero_price_list():
+	zpl = frappe.db.get_single_value("KP Settings", "zero_price_list")
+
+	if not zpl:
+		frappe.throw(_("Set Zero Price List in KP Settings!"))
+
+	return zpl
