@@ -31,6 +31,7 @@ def add_node():
 		parent_field: frappe.form_dict['parent'],
 		"is_group": frappe.form_dict['is_group'],
 		"chapter_head": frappe.form_dict['chapter_head'],
+		"rate_of_duty": frappe.form_dict['rate_of_duty'],
 	})
 
 	doc.save()
