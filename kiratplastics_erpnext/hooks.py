@@ -8,7 +8,7 @@ app_description = "ERPNext extensions for Kirat Plastics Pvt. Ltd."
 app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "support@castlecraft.in"
-app_version = "0.0.1"
+app_version = "1.0.0"
 app_license = "GPL v3"
 
 # Includes in <head>
@@ -70,13 +70,11 @@ app_license = "GPL v3"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
-# }
+doc_events = {
+	"Sales Invoice": {
+		"validate": "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_validate",
+	}
+}
 
 # Scheduled Tasks
 # ---------------
@@ -107,7 +105,8 @@ app_license = "GPL v3"
 # Overriding Whitelisted Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "kiratplastics_erpnext.event.get_events"
-# }
+override_whitelisted_methods = {
+	"erpnext.stock.get_item_details.get_item_details" : "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_get_item_details" 
+}
 
+fixtures = ["Custom Script", "Custom Field", "Property Setter"]
