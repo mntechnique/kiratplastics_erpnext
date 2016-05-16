@@ -58,9 +58,9 @@ def get_kp_settings(company):
 
 	out = {
 		"ep_account" : frappe.db.get_value("KP Settings Excise Payable", {"company": company}, "account"),
-		"freight_account": frappe.db.get_value("KP Settings Freight", {"company": company}, "account")
-		"packaging_expense_account": frappe.db.get_value("KP Settings Packaging Expense", {"company": company}, "account")
-		"zero_price_list" : frappe.db.get_single_value("Price List", "zero_price_list"),
+		"freight_account": frappe.db.get_value("KP Settings Freight", {"company": company}, "account"),
+		"packaging_expense_account": frappe.db.get_value("KP Settings Packaging Expense", {"company": company}, "account"),
+		"zero_price_list" : frappe.db.get_single_value("Price List", "zero_price_list")
 	}
 
 	if not out["ep_account"]:
