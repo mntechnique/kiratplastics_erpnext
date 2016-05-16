@@ -20,59 +20,11 @@ class KPSettings(Document):
 		if len(ep_accounts_companies)!= len(set(ep_accounts_companies)):
 			frappe.throw(_("Same Company is entered more than once in Default Excise Payable Account"))
 
-		freight_accounts_companies = []
-		for entry in self.freight_accounts:
-			freight_accounts_companies.append(entry.company)
-
-		if len(freight_accounts_companies)!= len(set(freight_accounts_companies)):
-			frappe.throw(_("Same Company is entered more than once in Default Freight Account"))
-
-		packaging_expense_accounts_companies = []
-		for entry in self.packaging_expense_accounts:
-			packaging_expense_accounts_companies.append(entry.company)
-
-		if len(packaging_expense_accounts_companies)!= len(set(packaging_expense_accounts_companies)):
-			frappe.throw(_("Same Company is entered more than once in Default Packaging Expense Account"))
-
 	def validate_accounts(self):
 		for entry in self.ep_accounts:
 			"""Error when Company of Ledger account doesn't match with Company Selected"""
 			if frappe.db.get_value("Account", entry.account, "company") != entry.company:
 				frappe.throw(_("Account does not match with Company for Default Excise Payable Account"))
-
-		for entry in self.ep_accounts:
-			"""Error when Company of Ledger account doesn't match with Company Selected"""
-			if frappe.db.get_value("Account", entry.account, "company") != entry.company:
-				frappe.throw(_("Account does not match with Company for Default Excise Payable Account"))
-
-		for entry in self.ep_accounts:
-			"""Error when Company of Ledger account doesn't match with Company Selected"""
-			if frappe.db.get_value("Account", entry.account, "company") != entry.company:
-				frappe.throw(_("Account does not match with Company for Default Excise Payable Account"))
-
-
-@frappe.whitelist()
-def get_kp_settings(company):
-	"""Return KP Settings for Company -
-	income_account, receivable_account, payable_account, tax_account and cost_center"""
-
-	out = {
-		"ep_account" : frappe.db.get_value("KP Settings Excise Payable", {"company": company}, "account"),
-		"freight_account": frappe.db.get_value("KP Settings Freight", {"company": company}, "account"),
-		"packaging_expense_account": frappe.db.get_value("KP Settings Packaging Expense", {"company": company}, "account"),
-		"zero_price_list" : frappe.db.get_single_value("Price List", "zero_price_list")
-	}
-
-	if not out["ep_account"]:
-		frappe.throw(_("Set Default Excise Payable Account in KP Settings"))
-	
-	if not out["freight_account"]:
-		frappe.throw(_("Set Default Freight Account in KP Settings"))
-	
-	if not out["packaging_expense_account"]:
-		frappe.throw(_("Set Default Packaging Expense Account in KP Settings"))
-
-	return out
 
 @frappe.whitelist()
 def get_ep_account(company):
