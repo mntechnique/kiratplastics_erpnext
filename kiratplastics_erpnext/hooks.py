@@ -8,7 +8,7 @@ app_description = "ERPNext extensions for Kirat Plastics Pvt. Ltd."
 app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "support@castlecraft.in"
-app_version = "1.0.0"
+app_version = "1.0.1"
 app_license = "GPL v3"
 
 # Includes in <head>
@@ -109,4 +109,4 @@ override_whitelisted_methods = {
 	"erpnext.stock.get_item_details.get_item_details" : "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_get_item_details" 
 }
 
-fixtures = ["Custom Script", "Custom Field", "Property Setter"]
+fixtures = ["Custom Script", "Custom Field", "Property Setter", {"dt": "Print Format", "filters": [["name", "=", "KP Sales Invoice"]]}]
