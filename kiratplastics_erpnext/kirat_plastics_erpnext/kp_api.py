@@ -10,7 +10,7 @@ from erpnext.stock.get_item_details import get_item_details, get_item_code
 #Query for filtering items.
 def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters):
 
-	return frappe.db.sql("""SELECT B.name, B.item_group, B.item_name, B.description as description
+	return frappe.db.sql("""SELECT B.name, A.ref_code, B.item_group, B.item_name, B.description as description
 	FROM `tabItem Customer Detail` AS A
 	INNER JOIN `tabItem` AS B ON A.parent = B.name
 	WHERE A.customer_name = '%s' AND B.excise_chapter = '%s';""" % (filters.get("cust_name"), filters.get("excise_chapter")))
@@ -52,6 +52,8 @@ def kp_get_item_details(args):
 
 	result["kirat_excise_duty_amt"] = excise_duty_amt
 	result["kirat_total_amt_with_excise"] = excise_duty_amt + result["amount"]
+
+	#result["customer_item_code"] = 
 	
 	return result
 
