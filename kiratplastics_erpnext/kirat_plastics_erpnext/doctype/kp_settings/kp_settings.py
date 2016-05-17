@@ -27,21 +27,6 @@ class KPSettings(Document):
 				frappe.throw(_("Account does not match with Company for Default Excise Payable Account"))
 
 @frappe.whitelist()
-def get_kp_settings(company):
-	"""Return KP Settings for Company -
-	income_account, receivable_account, payable_account, tax_account and cost_center"""
-
-	out = {
-		"ep_account" : frappe.db.get_value("KP Settings Excise Payable", {"company": company}, "account"),
-		"zero_price_list" : frappe.db.get_single_value("Price List", "zero_price_list"),
-	}
-
-	if not out["ep_account"]:
-		frappe.throw(_("Set Default Excise Payable Account in KP Settings"))
-
-	return out
-
-@frappe.whitelist()
 def get_ep_account(company):
 	ep_account = frappe.db.get_value("KP Settings Excise Payable", {"company": company}, "account")
 
