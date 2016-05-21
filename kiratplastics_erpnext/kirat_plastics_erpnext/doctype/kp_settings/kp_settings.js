@@ -17,19 +17,5 @@ frappe.ui.form.on('KP Settings', {
 	            }
 	        };
 	    });
-	    cur_frm.set_query("account", "freight_accounts", function() {
-	        return {
-	            "filters": {
-	                "is_group": 0
-	            }
-	        };
-	    });
-	    cur_frm.set_query("account", "packaging_expense_accounts", function() {
-	        return {
-	            "filters": {
-	                "is_group": 0
-	            }
-	        };
-	    });	    
 	}
 });
