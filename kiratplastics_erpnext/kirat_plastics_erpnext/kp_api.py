@@ -43,10 +43,12 @@ def kp_get_item_details(args):
 		item_rate = result["rate"]
 
 	#Set item_rate_for_excise_calc
-	if result["kirat_excise_price"] != 0.0:
-		item_rate_for_excise_calc = result["kirat_excise_price"]
-	else:
-		item_rate_for_excise_calc = item_rate
+	#Deprecated: 160521: Excise Price will be entered for each item and excise calculation will use ONLY excise price.
+	# if result["kirat_excise_price"] != 0.0:
+	# 	item_rate_for_excise_calc = result["kirat_excise_price"]
+	# else:
+	# 	item_rate_for_excise_calc = item_rate
+	item_rate_for_excise_calc = result["kirat_excise_price"]
 
 	excise_duty_amt = kp_calculate_excise_duty_amt(result["qty"], item_rate_for_excise_calc, result["kirat_excise_duty_rate"])
 
