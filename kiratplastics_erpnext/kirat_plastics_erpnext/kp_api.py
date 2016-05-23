@@ -66,3 +66,7 @@ def kp_calculate_excise_duty_amt(qty, price, rate):
 @frappe.whitelist()
 def kp_validate(self, method):
 	self.kirat_total_excise_payable_in_words = money_in_words(self.kirat_excise_payable_total)
+
+	#Check for duplicate items and items with zero rate for invoices other than type Sample/Challan.
+	if self.items.length != set(self.items).length:
+		frappe.throw(_("Some items have been selected twice."))
