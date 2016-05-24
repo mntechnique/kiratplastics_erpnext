@@ -64,9 +64,28 @@ def kp_calculate_excise_duty_amt(qty, price, rate):
 	return (qty * price) * (rate / 100)
 
 @frappe.whitelist()
-def kp_validate(self, method):
+def kp_si_validate(self, method):
 	self.kirat_total_excise_payable_in_words = money_in_words(self.kirat_excise_payable_total)
 
 	#Check for duplicate items and items with zero rate for invoices other than type Sample/Challan.
-	if self.items.length != set(self.items).length:
-		frappe.throw(_("Some items have been selected twice."))
+	validate_repeating_items(self)
+	validate_zero_amount_items(self)
+
+def validate_repeating_items(self):
+	"""Error when Same Company is entered multiple times in accounts"""
+	item_list = []
+	for itm in self.items:
+		item_list.append(itm.item_code)
+
+	if len(item_list)!= len(set(item_list)):
+		frappe.throw(_("Some items have been selected more than once."))
+
+def validate_zero_amount_items(self):
+	zero_rate_items = []
+	if (self.kirat_invoice_type != "Invoice for Sample") and (self.kirat_invoice_type != "Challan"):
+		for itm in self.items:
+			if itm.rate == 0.0:
+				zero_rate_items.append(itm.item_code)
+
+		if len(zero_rate_items) > 0:
+			frappe.throw(_("Items with zero rate cannot be added to invoices that are not Invoices for Sample or Challans"))

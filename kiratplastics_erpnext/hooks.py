@@ -72,7 +72,7 @@ app_license = "GPL v3"
 
 doc_events = {
 	"Sales Invoice": {
-		"validate": "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_validate",
+		"validate": "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_si_validate",
 	}
 }
 
