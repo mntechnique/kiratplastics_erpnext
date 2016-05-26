@@ -8,7 +8,7 @@ app_description = "ERPNext extensions for Kirat Plastics Pvt. Ltd."
 app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "support@castlecraft.in"
-app_version = "1.0.7"
+app_version = "1.0.8"
 app_license = "GPL v3"
 
 # Includes in <head>
@@ -72,7 +72,7 @@ app_license = "GPL v3"
 
 doc_events = {
 	"Sales Invoice": {
-		"validate": "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_validate",
+		"validate": "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_si_validate",
 	}
 }
 
