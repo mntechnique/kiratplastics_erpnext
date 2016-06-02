@@ -8,7 +8,7 @@ app_description = "ERPNext extensions for Kirat Plastics Pvt. Ltd."
 app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "support@castlecraft.in"
-app_version = "1.0.11"
+app_version = "1.1.0"
 app_license = "GPL v3"
 
 # Includes in <head>
@@ -16,7 +16,7 @@ app_license = "GPL v3"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/kiratplastics_erpnext/css/kiratplastics_erpnext.css"
-# app_include_js = "/assets/kiratplastics_erpnext/js/kiratplastics_erpnext.js"
+app_include_js = "/assets/kiratplastics_erpnext/js/kp_si.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/kiratplastics_erpnext/css/kiratplastics_erpnext.css"
