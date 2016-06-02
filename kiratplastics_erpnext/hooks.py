@@ -16,7 +16,7 @@ app_license = "GPL v3"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/kiratplastics_erpnext/css/kiratplastics_erpnext.css"
-# app_include_js = "/assets/kiratplastics_erpnext/js/kiratplastics_erpnext.js"
+app_include_js = "/assets/kiratplastics_erpnext/js/kp_si.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/kiratplastics_erpnext/css/kiratplastics_erpnext.css"
