@@ -171,3 +171,24 @@ function set_excise_price_readonly(frm) {
     var df = frappe.meta.get_docfield("Sales Invoice Item","kirat_excise_price", cur_frm.doc.name);
     df.read_only = (frm.doc.kirat_invoice_type != "Supplementary Invoice");
 }
+
+function set_naming_series_and_price_list(frm) {
+   switch (frm.doc.kirat_invoice_type) {
+     case "Supplementary Invoice":
+        frm.set_value("naming_series", "SINV-SUP-");
+        frm.set_value("selling_price_list", "Standard Selling");
+        break;
+     case "Invoice for Sample":
+        frm.set_value("naming_series", "SINV-SMP-");
+        frm.set_value("selling_price_list", zero_price_list); //2
+        break;
+     case "Challan":
+        frm.set_value("naming_series", "SINV-CHL-");
+        frm.set_value("selling_price_list", zero_price_list); //2
+        break;
+     default:
+        frm.set_value("naming_series", "SINV-");
+        frm.set_value("selling_price_list", "Standard Selling");
+        break;
+  }
+}
