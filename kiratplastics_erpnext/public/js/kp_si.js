@@ -169,7 +169,6 @@ function set_invoice_type_and_series_readonly(frm) {
   }
 }
 function set_excise_price_readonly(frm) { 
-   //frm.set_df_property("kirat_excise_price", "read_only", (frm.doc.kirat_invoice_type != "Supplementary Invoice"));
     var df = frappe.meta.get_docfield("Sales Invoice Item","kirat_excise_price", cur_frm.doc.name);
     df.read_only = (frm.doc.kirat_invoice_type != "Supplementary Invoice");
 }
