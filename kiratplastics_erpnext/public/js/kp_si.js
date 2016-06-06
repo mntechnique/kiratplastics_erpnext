@@ -82,13 +82,15 @@ function inject_excise_row_and_append_taxes(frm) {
     // } 
 
     if (frm.doc.kirat_invoice_type == "Challan") {
-       total_ed = 0.0;
-       total_ea = 0.0;
+      total_ed = 0.0;
+      total_ea = 0.0;
     } else {
-        for (var i = 0; i <items.length; i++) {
+      if (items) {
+        for (var i = 0; i < items.length; i++) {
            total_ed += items[i].kirat_excise_duty_amt;
            total_ea += items[i].kirat_total_amt_with_excise;
         }
+      }
     } 
 
     //Set total fields in Doc
@@ -167,7 +169,6 @@ function set_invoice_type_and_series_readonly(frm) {
   }
 }
 function set_excise_price_readonly(frm) { 
-   //frm.set_df_property("kirat_excise_price", "read_only", (frm.doc.kirat_invoice_type != "Supplementary Invoice"));
     var df = frappe.meta.get_docfield("Sales Invoice Item","kirat_excise_price", cur_frm.doc.name);
     df.read_only = (frm.doc.kirat_invoice_type != "Supplementary Invoice");
 }
