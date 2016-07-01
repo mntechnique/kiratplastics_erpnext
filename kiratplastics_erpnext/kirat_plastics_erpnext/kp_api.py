@@ -6,14 +6,121 @@ import frappe
 from frappe import _
 from frappe.utils import money_in_words
 from erpnext.stock.get_item_details import get_item_details, get_item_code
+from erpnext.controllers.queries import get_filters_cond
+from frappe.desk.reportview import get_match_cond
+from frappe.utils import nowdate
+#set_item_filter_qu
+
+def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters=None):
+	kp_filters = filters
+	filters = {}
+
+	conditions = []
+
+	x = None
+
+	try:
+		x = frappe.db.sql("""select tabItem.name,tabItem.item_group,
+			if(length(tabItem.item_name) > 40,
+				concat(substr(tabItem.item_name, 1, 40), "..."), item_name) as item_name,
+			if(length(tabItem.description) > 40, \
+				concat(substr(tabItem.description, 1, 40), "..."), description) as decription
+			from tabItem INNER JOIN `tabItem Customer Detail` AS B ON tabItem.name = B.parent
+			where 
+				tabItem.excise_chapter = '{exc}' AND B.customer_name = '{cn}' 
+				and	tabItem.docstatus < 2
+				and tabItem.has_variants=0
+				and tabItem.disabled=0
+				and (tabItem.end_of_life > %(today)s or ifnull(tabItem.end_of_life, '0000-00-00')='0000-00-00')
+				and (tabItem.`{key}` LIKE %(txt)s
+					or tabItem.item_group LIKE %(txt)s
+					or tabItem.item_name LIKE %(txt)s
+					or tabItem.description LIKE %(txt)s)
+				{fcond} {mcond}
+			order by
+				if(locate(%(_txt)s, tabItem.name), locate(%(_txt)s, tabItem.name), 99999),
+				if(locate(%(_txt)s, tabItem.item_name), locate(%(_txt)s, tabItem.item_name), 99999),
+				tabItem.idx desc,
+				tabItem.name, tabItem.item_name
+			limit %(start)s, %(page_len)s """.format(key=searchfield,
+				fcond=get_filters_cond(doctype, filters, conditions).replace('%', '%%'),
+				mcond=get_match_cond(doctype).replace('%', '%%'), 
+				exc=kp_filters.get("excise_chapter"), cn=kp_filters.get("cust_name")), {
+					"today": nowdate(),
+					"txt": "%%%s%%" % txt,
+					"_txt": txt.replace("%", ""),
+					"start": start,
+					"page_len": page_len
+				})
+	except Exception, e:
+		frappe.msgprint(e)
+	else:
+		return x
+	# out = item_query(doctype, txt, searchfield, start, page_len, filters)
+	# return out
+
+	# x =  frappe.db.sql("""SELECT B.name, A.ref_code, B.item_group, B.item_name, B.description as description
+	# FROM `tabItem Customer Detail` AS A
+	# INNER JOIN `tabItem` AS B ON A.parent = B.name
+	# WHERE A.customer_name = '%s' AND B.excise_chapter = '%s';""" % (filters.get("cust_name"), filters.get("excise_chapter")))
+	
+	# return x
+
 
 #Query for filtering items.
-def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters):
+#def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters):
+# def kp_sinv_item_query(doctype, txt, searchfield, start, page_len, filters=None):
+# 	kp_filters = filters
+# 	filters = {}
 
-	return frappe.db.sql("""SELECT B.name, A.ref_code, B.item_group, B.item_name, B.description as description
-	FROM `tabItem Customer Detail` AS A
-	INNER JOIN `tabItem` AS B ON A.parent = B.name
-	WHERE A.customer_name = '%s' AND B.excise_chapter = '%s';""" % (filters.get("cust_name"), filters.get("excise_chapter")))
+# 	conditions = []
+# 	sql =  frappe.db.sql("""select tabItem.name,tabItem.item_group,
+# 		if(length(tabItem.item_name) > 40,
+# 			concat(substr(tabItem.item_name, 1, 40), "..."), item_name) as item_name,
+# 		if(length(tabItem.description) > 40, \
+# 			concat(substr(tabItem.description, 1, 40), "..."), description) as decription
+# 		from tabItem INNER JOIN `tabItem Customer Detail` AS B ON tabItem.name = B.parent
+# 		where 
+# 			tabItem.excise_chapter = '{exc}' AND B.customer_name = '{cn}' 
+# 			and	tabItem.docstatus < 2
+# 			and tabItem.has_variants=0
+# 			and tabItem.disabled=0
+# 			and (tabItem.end_of_life > %(today)s or ifnull(tabItem.end_of_life, '0000-00-00')='0000-00-00')
+# 			and (tabItem.`{key}` LIKE %(txt)s
+# 				or tabItem.item_group LIKE %(txt)s
+# 				or tabItem.item_name LIKE %(txt)s
+# 				or tabItem.description LIKE %(txt)s)
+# 			{fcond} {mcond}
+# 		order by
+# 			if(locate(%(_txt)s, name), locate(%(_txt)s, name), 99999),
+# 			if(locate(%(_txt)s, item_name), locate(%(_txt)s, item_name), 99999),
+# 			idx desc,
+# 			name, item_name
+# 		limit %(start)s, %(page_len)s """.format(key=searchfield,
+# 			fcond=get_filters_cond(doctype, filters, conditions).replace('%', '%%'),
+# 			mcond=get_match_cond(doctype).replace('%', '%%'), 
+# 			exc=kp_filters.get("excise_chapter"), cn=kp_filters.get("cust_name")),
+# 			{
+# 				"today": nowdate(),
+# 				"txt": "%%%s%%" % txt,
+# 				"_txt": txt.replace("%", ""),
+# 				"start": start,
+# 				"page_len": page_len
+# 			})
+	
+# 	frappe.msgprint(sql)
+
+
+	# return sql
+	# out = item_query(doctype, txt, searchfield, start, page_len, filters)
+	# return out
+
+	# x =  frappe.db.sql("""SELECT B.name, A.ref_code, B.item_group, B.item_name, B.description as description
+	# FROM `tabItem Customer Detail` AS A
+	# INNER JOIN `tabItem` AS B ON A.parent = B.name
+	# WHERE A.customer_name = '%s' AND B.excise_chapter = '%s';""" % (filters.get("cust_name"), filters.get("excise_chapter")))
+	
+	# return x
 
 #Retrieve item details.
 @frappe.whitelist() #overridden in hooks.py
