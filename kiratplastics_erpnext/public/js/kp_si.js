@@ -141,10 +141,10 @@ function inject_excise_row_and_append_taxes(frm) {
 }
 
 function set_item_filter_query(frm) {
-   frm.set_query("item_code", "items", function() {
+   cur_frm.set_query("item_code", "items", function() {
       return {
         query: "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_sinv_item_query",
-        filters: { 
+        filters: {
            "cust_name": frm.doc.customer,
            "excise_chapter": frm.doc.kirat_excise_chapter_head
         }
@@ -176,19 +176,19 @@ function set_excise_price_readonly(frm) {
 function set_naming_series_and_price_list(frm) {
    switch (frm.doc.kirat_invoice_type) {
      case "Supplementary Invoice":
-        frm.set_value("naming_series", "SINV-SUP-");
+        //frm.set_value("naming_series", "SINV-SUP-");
         frm.set_value("selling_price_list", "Standard Selling");
         break;
      case "Invoice for Sample":
-        frm.set_value("naming_series", "SINV-SMP-");
+        //frm.set_value("naming_series", "SINV-SMP-");
         frm.set_value("selling_price_list", zero_price_list); //2
         break;
      case "Challan":
-        frm.set_value("naming_series", "SINV-CHL-");
+        //frm.set_value("naming_series", "SINV-CHL-");
         frm.set_value("selling_price_list", zero_price_list); //2
         break;
      default:
-        frm.set_value("naming_series", "SINV-");
+        //frm.set_value("naming_series", "SINV-");
         frm.set_value("selling_price_list", "Standard Selling");
         break;
   }
