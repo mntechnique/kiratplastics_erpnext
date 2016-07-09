@@ -49,6 +49,8 @@ function calculate_excise_duty_amount(item) {
    } else {
       item_price = item.rate;
    }
+ 
+   item_price_for_excise_calc = item.kirat_excise_price;
    //Deprecated: 160521: Calculate excise rate ONLY with excise price.
    //It WILL be entered manually for each item.
    // if (item.kirat_excise_price != 0) {
@@ -56,8 +58,7 @@ function calculate_excise_duty_amount(item) {
    // } else {
    //    item_price_for_excise_calc = item_price; //Price list rate or rate.
    // }
-   item_price_for_excise_calc = item.kirat_excise_price;
-
+   
    var excise_duty_amt = (item.qty * item_price_for_excise_calc) * (item.kirat_excise_duty_rate / 100);
    item.kirat_excise_duty_amt = excise_duty_amt;
    item.kirat_total_amt_with_excise = item.amount + excise_duty_amt;
@@ -69,17 +70,6 @@ function inject_excise_row_and_append_taxes(frm) {
     var items = frm.doc.items;
     var total_ed = 0.0;
     var total_ea = 0.0; //Total Amount with Excise.
-
-    //Inject total as zero for Sample and Challan.
-    // if (frm.doc.kirat_invoice_type == "Invoice for Sample" | frm.doc.kirat_invoice_type == "Challan") {
-    //    total_ed = 0.0;
-    //    total_ea = 0.0;
-    // } else {
-    //     for (var i = 0; i <items.length; i++) {
-    //        total_ed += items[i].kirat_excise_duty_amt;
-    //        total_ea += items[i].kirat_total_amt_with_excise;
-    //     }
-    // } 
 
     if (frm.doc.kirat_invoice_type == "Challan") {
       total_ed = 0.0;
@@ -173,23 +163,58 @@ function set_excise_price_readonly(frm) {
     df.read_only = (frm.doc.kirat_invoice_type != "Supplementary Invoice");
 }
 
+
+
 function set_naming_series_and_price_list(frm) {
    switch (frm.doc.kirat_invoice_type) {
-     case "Supplementary Invoice":
-        //frm.set_value("naming_series", "SINV-SUP-");
-        frm.set_value("selling_price_list", "Standard Selling");
-        break;
      case "Invoice for Sample":
-        //frm.set_value("naming_series", "SINV-SMP-");
         frm.set_value("selling_price_list", zero_price_list); //2
         break;
+
      case "Challan":
-        //frm.set_value("naming_series", "SINV-CHL-");
         frm.set_value("selling_price_list", zero_price_list); //2
+        break;
+
+     case "Export":
+        frm.set_value("naming_series", "KPX16-17/");
+        if ((!frm.doc.selling_price_list) || (frm.doc.selling_price_list.indexOf('Zero') >= 0)) { 
+          frm.set_value("selling_price_list", "Standard Selling"); 
+        } //2
         break;
      default:
-        //frm.set_value("naming_series", "SINV-");
-        frm.set_value("selling_price_list", "Standard Selling");
+        frm.set_value("naming_series", "KP16-17/");
+        if ((!frm.doc.selling_price_list) || (frm.doc.selling_price_list.indexOf('Zero') >= 0)) { 
+          frm.set_value("selling_price_list", "Standard Selling"); //2
+        }
         break;
   }
 }
+
+
+// function set_naming_series_and_price_list(frm) {
+//    frm.set_value("naming_series", "KP16-17/"); //Default naming series.
+
+//    switch (frm.doc.kirat_invoice_type) {
+//      case "Supplementary Invoice":
+//         //frm.set_value("naming_series", "SINV-SUP-");
+//         frm.set_value("selling_price_list", "Standard Selling");
+//         break;
+//      case "Invoice for Sample":
+//         //frm.set_value("naming_series", "SINV-SMP-");
+//         frm.set_value("selling_price_list", zero_price_list); //2
+//         break;
+//      case "Challan":
+//         //frm.set_value("naming_series", "SINV-CHL-");
+//         frm.set_value("selling_price_list", zero_price_list); //2
+//         break;
+//      case "Export":
+//         frm.set_value("naming_series", "KPX16-17/");
+//         frm.set_value("selling_price_list", "Standard Selling"); //2
+//         break;
+//      default:
+//         //frm.set_value("naming_series", "SINV-");
+//         frm.set_value("selling_price_list", "Standard Selling");
+//         frm.set_value("naming_series", "KP16-17/"); //Additional safeguard.
+//         break;
+//   }
+// }
