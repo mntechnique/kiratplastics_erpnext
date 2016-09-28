@@ -168,20 +168,31 @@ function set_excise_price_readonly(frm) {
 function set_naming_series_and_price_list(frm) {
    switch (frm.doc.kirat_invoice_type) {
      case "Invoice for Sample":
+        frm.set_value("update_stock", 1);
         frm.set_value("selling_price_list", zero_price_list); //2
         break;
 
      case "Challan":
+        frm.set_value("update_stock", 1);
         frm.set_value("selling_price_list", zero_price_list); //2
         break;
 
      case "Export":
+        frm.set_value("update_stock", 1);
         frm.set_value("naming_series", "KPX16-17/");
         if ((!frm.doc.selling_price_list) || (frm.doc.selling_price_list.indexOf('Zero') >= 0)) { 
           frm.set_value("selling_price_list", "Standard Selling"); 
         } //2
         break;
+     case "Supplementary Invoice":
+        frm.set_value("update_stock", 0);
+
+        if ((!frm.doc.selling_price_list) || (frm.doc.selling_price_list.indexOf('Zero') >= 0)) { 
+          frm.set_value("selling_price_list", "Standard Selling"); //2
+        }
+        break;
      default:
+        frm.set_value("update_stock", 1);
         frm.set_value("naming_series", "KP16-17/");
         if ((!frm.doc.selling_price_list) || (frm.doc.selling_price_list.indexOf('Zero') >= 0)) { 
           frm.set_value("selling_price_list", "Standard Selling"); //2
