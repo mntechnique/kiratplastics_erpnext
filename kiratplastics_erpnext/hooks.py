@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from . import __version__ as app_version
-
 
 app_name = "kiratplastics_erpnext"
 app_title = "Kirat Plastics ERPNext"
@@ -111,4 +109,7 @@ override_whitelisted_methods = {
 	"erpnext.stock.get_item_details.get_item_details" : "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_get_item_details" 
 }
 
-fixtures = ["Custom Script", "Custom Field", "Property Setter", {"dt": "Print Format", "filters": [["name", "=", "KP Sales Invoice"]]}]
+fixtures = ["Custom Script", 
+			"Custom Field", 
+			"Property Setter", 
+			{"dt": "Print Format", "filters": [["name", "=", "KP Sales Invoice"]]}]
