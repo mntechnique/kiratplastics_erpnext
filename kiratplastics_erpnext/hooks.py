@@ -109,7 +109,5 @@ override_whitelisted_methods = {
 	"erpnext.stock.get_item_details.get_item_details" : "kiratplastics_erpnext.kirat_plastics_erpnext.kp_api.kp_get_item_details" 
 }
 
-fixtures = ["Custom Script", 
-			"Custom Field", 
-			"Property Setter", 
-			{"dt": "Print Format", "filters": [["name", "=", "KP Sales Invoice"]]}]
+
+fixtures = [{"dt": "Custom Script", "filters":[["name", "not in", ["Sales Invoice-Client", "Item-Client"]]]}, "Custom Field", "Property Setter", {"dt": "Print Format", "filters": [["name", "=", "KP Sales Invoice"]]}]
